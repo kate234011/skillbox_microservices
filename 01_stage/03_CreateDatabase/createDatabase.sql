@@ -2,6 +2,7 @@ CREATE DATABASE users;
 
 CREATE SCHEMA IF NOT EXISTS users;
 
+-- create table companies
 DROP TABLE IF EXISTS "companies";
 CREATE TABLE "users"."companies" (
     "ID" numeric NOT NULL,
@@ -12,7 +13,7 @@ CREATE TABLE "users"."companies" (
     CONSTRAINT "companies_ID" PRIMARY KEY ("ID")
 ) WITH (oids = false);
 
-
+-- create table hardskills
 DROP TABLE IF EXISTS "hardskills";
 CREATE TABLE "users"."hardskills" (
     "ID" numeric NOT NULL,
@@ -20,21 +21,21 @@ CREATE TABLE "users"."hardskills" (
     CONSTRAINT "hardskills_ID" PRIMARY KEY ("ID")
 ) WITH (oids = false);
 
-
+--create table subscriptions
 DROP TABLE IF EXISTS "subscriptions";
 CREATE TABLE "users"."subscriptions" (
     "user_id" uuid NOT NULL,
     "subscription_id" uuid NOT NULL
 ) WITH (oids = false);
 
-
+-- create table user_hardskills
 DROP TABLE IF EXISTS "user_hardskills";
 CREATE TABLE "users"."user_hardskills" (
     "user_id" uuid NOT NULL,
     "hardskill_id" numeric NOT NULL
 ) WITH (oids = false);
 
-
+-- create table user_secure
 DROP TABLE IF EXISTS "user_secure";
 CREATE TABLE "users"."user_secure" (
     "ID" uuid NOT NULL,
@@ -44,7 +45,7 @@ CREATE TABLE "users"."user_secure" (
     CONSTRAINT "secure_id_regEmail" UNIQUE ("user_id", "registration_email")
 ) WITH (oids = false);
 
-
+-- create table users
 DROP TABLE IF EXISTS "users";
 CREATE TABLE "users"."users" (
     "ID" uuid NOT NULL,
@@ -58,12 +59,14 @@ CREATE TABLE "users"."users" (
     "avatar" bytea,
     "gitHub" character varying(150),
     "user_description" character varying(500),
-    CONSTRAINT "users_location" UNIQUE ("name", "last_name", "location"),
     CONSTRAINT "users_ID" PRIMARY KEY ("ID"),
+    CONSTRAINT "users_lastname_location" UNIQUE ("name", "last_name", "location"),
     CONSTRAINT "users_nickname" UNIQUE ("nickname")
 ) WITH (oids = false);
 
 CREATE INDEX "users_birthdate" ON "users"."users" USING btree ("name", "last_name", "birthdate");
+CREATE INDEX "users_gender" ON "users"."users" USING btree ("gender");
+CREATE INDEX "users_location" ON "users"."users" USING btree ("location");
 CREATE INDEX "users_name_lastName" ON "users"."users" USING btree ("name", "last_name");
 
 -- create table UsersLogs
